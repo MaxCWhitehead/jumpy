@@ -3028,6 +3028,7 @@ dependencies = [
  "nalgebra",
  "once_cell",
  "ordered-float",
+ "parry2d",
  "peg",
  "petgraph",
  "postcard",

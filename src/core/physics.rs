@@ -246,8 +246,12 @@ fn update_kinematic_bodies(
         {
             puffin::profile_scope!("move body");
 
-            if collision_world.move_vertical(&mut transforms, entity, body.velocity.y * time_factor)
-            {
+            if collision_world.move_vertical(
+                &mut transforms,
+                entity,
+                body.velocity.y * time_factor,
+                None,
+            ) {
                 body.velocity.y *= -body.bounciness;
             }
 
@@ -258,6 +262,7 @@ fn update_kinematic_bodies(
                 &mut transforms,
                 entity,
                 body.velocity.x * time_factor,
+                None,
             ) {
                 body.velocity.x *= -body.bounciness;
             }

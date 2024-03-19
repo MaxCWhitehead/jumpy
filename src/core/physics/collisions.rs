@@ -4,6 +4,8 @@ use std::hash::BuildHasherDefault;
 
 use indexmap::IndexMap;
 
+use nalgebra::Unit;
+use nalgebra::Vector2;
 pub use rapier2d::prelude as rapier;
 pub use shape::*;
 
@@ -581,11 +583,14 @@ impl<'a> CollisionWorld<'a> {
 
     /// Attempt to move a body vertically. This will return `true` if an obstacle was run into that
     /// caused the movement to stop short.
+    ///
+    /// if `contact_data` is provided, contact data will be computed and returned if a hit stops movement.
     pub fn move_vertical(
         &mut self,
         transforms: &mut CompMut<Transform>,
         entity: Entity,
         mut dy: f32,
+        out_contact_data: Option<&mut Option<rapier2d::parry::query::Contact>>,
     ) -> bool {
         puffin::profile_function!();
 
@@ -601,6 +606,8 @@ impl<'a> CollisionWorld<'a> {
             return false;
         }
 
+        let dy_sign = dy.signum();
+
         // Get the shape and position info for the given entity
         let collider = self.colliders.get_mut(entity).unwrap();
         let transform = *transforms.get(entity).unwrap();
@@ -611,7 +618,9 @@ impl<'a> CollisionWorld<'a> {
         let shape = collider_shape_cache.shared_shape(collider.shape);
 
         let mut movement = 0.0;
-        let collided = loop {
+
+        // if we stop movement due to collision, return Some(ColliderHandle), else None.
+        let hit_handle = loop {
             // Do a shape cast in the direction of movement
             let velocity = rapier::Vector::new(0.0, dy);
             let collision = query_pipeline.cast_shape(
@@ -652,7 +661,7 @@ impl<'a> CollisionWorld<'a> {
                 dy -= diff;
 
                 if self.solids.contains(ent) {
-                    break true;
+                    break Some(handle);
                 }
 
                 let tile_kind = *self.tile_collision_kinds.get(ent).unwrap();
@@ -672,20 +681,63 @@ impl<'a> CollisionWorld<'a> {
                     && (collider.descent || dy > 0.0 || collider.seen_wood))
                 {
                     // Indicate we ran into something and stop processing
-                    break true;
+                    break Some(handle);
                 }
 
             // If there is no collision
             } else {
                 movement += dy;
                 // Indicate we didn't run into anything and stop processing
-                break false;
+                break None;
             }
         };
+
+        let collided = hit_handle.is_some();
 
         // Move the entity
         let transform = transforms.get_mut(entity).unwrap();
         transform.translation.y += movement - if collided { 0.1 * dy.signum() } else { 0.0 };
+
+        // If we hit something and caller requested contact data, generate it
+        if let Some(hit_handle) = hit_handle {
+            if let Some(out_contact_data) = out_contact_data {
+                let hit_collider = collider_set.get(hit_handle).unwrap();
+
+                // Expand by 0.1 to make sure we are intersecting after stopping at TOI (may be slightly
+                // not in contact)
+                let expansion = 0.1;
+                let pos12 = position.inv_mul(hit_collider.position());
+                let contact = query_pipeline.query_dispatcher().contact(
+                    &pos12,
+                    &**shape,
+                    hit_collider.shape(),
+                    expansion,
+                );
+
+                match contact {
+                    Ok(Some(mut contact)) => {
+                        // Transform point1/normal1 to world space.
+                        contact.transform1_by_mut(&position);
+
+                        // Fix normal to same direction as movement / away from body.
+                        // This prevents horizontal normals when moving vertically.
+                        // Not entirely correct, but hopefully good enough.
+                        contact.normal1 = Unit::new_unchecked(Vector2::new(0.0, 1.0 * dy_sign));
+                        *out_contact_data = Some(contact);
+
+                        //
+                    }
+                    Ok(None) => (),
+                    Err(err) => {
+                        warn!(
+                            "move_vertical failed to compute contact data between shapes: {}",
+                            err
+                        )
+                    }
+                }
+            }
+        }
+        // Separate slightly if collided
 
         // Final check, if we are out of woods after the move - reset wood flags
         {
@@ -723,6 +775,7 @@ impl<'a> CollisionWorld<'a> {
         transforms: &mut CompMut<Transform>,
         entity: Entity,
         mut dx: f32,
+        out_contact_data: Option<&mut Option<rapier2d::parry::query::Contact>>,
     ) -> bool {
         puffin::profile_function!();
 
@@ -738,6 +791,8 @@ impl<'a> CollisionWorld<'a> {
             return false;
         }
 
+        let dx_sign = dx.signum();
+
         // Get the shape and position info for the given entity
         let collider = self.colliders.get_mut(entity).unwrap();
         let transform = *transforms.get(entity).unwrap();
@@ -749,7 +804,7 @@ impl<'a> CollisionWorld<'a> {
         let shape = collider_shape_cache.shared_shape(collider.shape);
 
         let mut movement = 0.0;
-        let collided = 'collision: loop {
+        let hit_handle = loop {
             // Do a shape cast in the direction of movement
             let velocity = rapier::Vector::new(dx, 0.0);
             let collision = {
@@ -793,7 +848,7 @@ impl<'a> CollisionWorld<'a> {
                 dx -= diff;
 
                 if self.solids.contains(ent) {
-                    break true;
+                    break Some(handle);
                 }
 
                 let tile_kind = *self.tile_collision_kinds.get(ent).unwrap();
@@ -806,20 +861,61 @@ impl<'a> CollisionWorld<'a> {
                 // If we ran into any other kind of tile
                 } else {
                     // Indicate we ran into something and stop processing
-                    break 'collision true;
+                    break Some(handle);
                 }
 
             // If there is no collision
             } else {
                 movement += dx;
                 // Indicate we didn't run into anything and stop processing
-                break 'collision false;
+                break None;
             }
         };
+
+        let collided = hit_handle.is_some();
 
         // Move the entity
         let transform = transforms.get_mut(entity).unwrap();
         transform.translation.x += movement - if collided { 0.1 * dx.signum() } else { 0.0 };
+
+        // If we hit something and caller requested contact data, generate it
+        if let Some(hit_handle) = hit_handle {
+            if let Some(out_contact_data) = out_contact_data {
+                let hit_collider = collider_set.get(hit_handle).unwrap();
+
+                // Expand by 0.1 to make sure we are intersecting after stopping at TOI (may be slightly
+                // not in contact)
+                let expansion = 0.1;
+                let pos12 = position.inv_mul(hit_collider.position());
+                let contact = query_pipeline.query_dispatcher().contact(
+                    &pos12,
+                    &**shape,
+                    hit_collider.shape(),
+                    expansion,
+                );
+
+                match contact {
+                    Ok(Some(mut contact)) => {
+                        // Transform point1/normal1 to world space.
+                        contact.transform1_by_mut(&position);
+
+                        // Fix normal to same direction as movement / away from body.
+                        // This prevents vertical normals when moving horizontally.
+                        // Not entirely correct, but hopefully good enough.
+                        contact.normal1 = Unit::new_unchecked(Vector2::new(1.0 * dx_sign, 0.0));
+                        *out_contact_data = Some(contact);
+                    }
+
+                    Ok(None) => (),
+                    Err(err) => {
+                        warn!(
+                            "move_vertical failed to compute contact data between shapes: {}",
+                            err
+                        )
+                    }
+                }
+            }
+        }
 
         // Final check, if we are out of woods after the move - reset wood flags
         {
