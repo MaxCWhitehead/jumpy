@@ -4159,6 +4159,7 @@ dependencies = [
  "bevy_tasks",
  "bitfield",
  "bitflags 2.6.0",
+ "bones_asset",
  "bones_bevy_renderer",
  "bones_framework",
  "bytemuck",

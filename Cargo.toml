@@ -16,6 +16,7 @@ default = []
 
 [dependencies]
 bones_framework     = { git = "https://github.com/MaxCWhitehead/bones", branch = "iroh-git" }
+bones_asset         = { git = "https://github.com/MaxCWhitehead/bones", branch = "iroh-git", features = ["cid_debug_trace"] }
 bones_bevy_renderer = { git = "https://github.com/MaxCWhitehead/bones", branch = "iroh-git" }
 bevy_tasks          = "0.11"
 bitflags            = "2.4"
