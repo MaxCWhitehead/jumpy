@@ -307,6 +307,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "async-channel"
+version = "2.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "89b47800b0be77592da0afd425cc03468052844aff33b84e33cc696f64e77b6a"
+dependencies = [
+ "concurrent-queue",
+ "event-listener-strategy",
+ "futures-core",
+ "pin-project-lite",
+]
+
+[[package]]
 name = "async-executor"
 version = "1.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -468,7 +480,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9714af523da4cdf58c42a317e5ed40349708ad954a18533991fd64c8ae0a6f68"
 dependencies = [
  "anyhow",
- "async-channel",
+ "async-channel 1.9.0",
  "bevy_app",
  "bevy_diagnostic",
  "bevy_ecs",
@@ -566,7 +578,7 @@ version = "0.11.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "266144b36df7e834d5198049e037ecdf2a2310a76ce39ed937d1b0a6a2c4e8c6"
 dependencies = [
- "async-channel",
+ "async-channel 1.9.0",
  "bevy_ecs_macros",
  "bevy_ptr",
  "bevy_reflect",
@@ -844,7 +856,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "39df4824b760928c27afc7b00fb649c7a63c9d76661ab014ff5c86537ee906cb"
 dependencies = [
  "anyhow",
- "async-channel",
+ "async-channel 1.9.0",
  "bevy_app",
  "bevy_asset",
  "bevy_core",
@@ -950,7 +962,7 @@ version = "0.11.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c73bbb847c83990d3927005090df52f8ac49332e1643d2ad9aac3cd2974e66bf"
 dependencies = [
- "async-channel",
+ "async-channel 1.9.0",
  "async-executor",
  "async-task",
  "concurrent-queue",
@@ -1192,11 +1204,11 @@ dependencies = [
 [[package]]
 name = "bones_asset"
 version = "0.3.0"
-source = "git+https://github.com/fishfolk/bones#f495e07250004a13c7492d81881b53427086a8d7"
+source = "git+https://github.com/MaxCWhitehead/bones?branch=iroh-git#4218b116ba28add97ed7c4fa407a27e34df105c2"
 dependencies = [
  "anyhow",
  "append-only-vec",
- "async-channel",
+ "async-channel 1.9.0",
  "bevy_tasks",
  "bones_schema",
  "bones_utils",
@@ -1223,7 +1235,7 @@ dependencies = [
 [[package]]
 name = "bones_bevy_renderer"
 version = "0.3.0"
-source = "git+https://github.com/fishfolk/bones#f495e07250004a13c7492d81881b53427086a8d7"
+source = "git+https://github.com/MaxCWhitehead/bones?branch=iroh-git#4218b116ba28add97ed7c4fa407a27e34df105c2"
 dependencies = [
  "anyhow",
  "bevy",
@@ -1240,7 +1252,7 @@ dependencies = [
 [[package]]
 name = "bones_ecs"
 version = "0.3.0"
-source = "git+https://github.com/fishfolk/bones#f495e07250004a13c7492d81881b53427086a8d7"
+source = "git+https://github.com/MaxCWhitehead/bones?branch=iroh-git#4218b116ba28add97ed7c4fa407a27e34df105c2"
 dependencies = [
  "anyhow",
  "atomicell",
@@ -1257,7 +1269,7 @@ dependencies = [
 [[package]]
 name = "bones_ecs_macros"
 version = "0.3.0"
-source = "git+https://github.com/fishfolk/bones#f495e07250004a13c7492d81881b53427086a8d7"
+source = "git+https://github.com/MaxCWhitehead/bones?branch=iroh-git#4218b116ba28add97ed7c4fa407a27e34df105c2"
 dependencies = [
  "bones_ecs_macros_core",
  "proc-macro2",
@@ -1266,7 +1278,7 @@ dependencies = [
 [[package]]
 name = "bones_ecs_macros_core"
 version = "0.3.0"
-source = "git+https://github.com/fishfolk/bones#f495e07250004a13c7492d81881b53427086a8d7"
+source = "git+https://github.com/MaxCWhitehead/bones?branch=iroh-git#4218b116ba28add97ed7c4fa407a27e34df105c2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1276,10 +1288,10 @@ dependencies = [
 [[package]]
 name = "bones_framework"
 version = "0.3.0"
-source = "git+https://github.com/fishfolk/bones#f495e07250004a13c7492d81881b53427086a8d7"
+source = "git+https://github.com/MaxCWhitehead/bones?branch=iroh-git#4218b116ba28add97ed7c4fa407a27e34df105c2"
 dependencies = [
  "anyhow",
- "async-channel",
+ "async-channel 1.9.0",
  "bevy_tasks",
  "bones_asset",
  "bones_lib",
@@ -1300,7 +1312,7 @@ dependencies = [
  "image 0.24.9",
  "instant",
  "intl-memoizer",
- "iroh-net",
+ "iroh-net 0.21.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "iroh-quinn",
  "kira",
  "mdns-sd",
@@ -1325,7 +1337,7 @@ dependencies = [
 [[package]]
 name = "bones_lib"
 version = "0.3.0"
-source = "git+https://github.com/fishfolk/bones#f495e07250004a13c7492d81881b53427086a8d7"
+source = "git+https://github.com/MaxCWhitehead/bones?branch=iroh-git#4218b116ba28add97ed7c4fa407a27e34df105c2"
 dependencies = [
  "bones_ecs",
  "instant",
@@ -1334,16 +1346,16 @@ dependencies = [
 [[package]]
 name = "bones_matchmaker_proto"
 version = "0.2.0"
-source = "git+https://github.com/fishfolk/bones#f495e07250004a13c7492d81881b53427086a8d7"
+source = "git+https://github.com/MaxCWhitehead/bones?branch=iroh-git#4218b116ba28add97ed7c4fa407a27e34df105c2"
 dependencies = [
- "iroh-net",
+ "iroh-net 0.21.0 (git+https://github.com/n0-computer/iroh.git)",
  "serde",
 ]
 
 [[package]]
 name = "bones_schema"
 version = "0.3.0"
-source = "git+https://github.com/fishfolk/bones#f495e07250004a13c7492d81881b53427086a8d7"
+source = "git+https://github.com/MaxCWhitehead/bones?branch=iroh-git#4218b116ba28add97ed7c4fa407a27e34df105c2"
 dependencies = [
  "append-only-vec",
  "bones_schema_macros",
@@ -1361,7 +1373,7 @@ dependencies = [
 [[package]]
 name = "bones_schema_macros"
 version = "0.3.0"
-source = "git+https://github.com/fishfolk/bones#f495e07250004a13c7492d81881b53427086a8d7"
+source = "git+https://github.com/MaxCWhitehead/bones?branch=iroh-git#4218b116ba28add97ed7c4fa407a27e34df105c2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1371,9 +1383,9 @@ dependencies = [
 [[package]]
 name = "bones_scripting"
 version = "0.3.0"
-source = "git+https://github.com/fishfolk/bones#f495e07250004a13c7492d81881b53427086a8d7"
+source = "git+https://github.com/MaxCWhitehead/bones?branch=iroh-git#4218b116ba28add97ed7c4fa407a27e34df105c2"
 dependencies = [
- "async-channel",
+ "async-channel 1.9.0",
  "bevy_tasks",
  "bones_asset",
  "bones_lib",
@@ -1388,7 +1400,7 @@ dependencies = [
 [[package]]
 name = "bones_utils"
 version = "0.3.0"
-source = "git+https://github.com/fishfolk/bones#f495e07250004a13c7492d81881b53427086a8d7"
+source = "git+https://github.com/MaxCWhitehead/bones?branch=iroh-git#4218b116ba28add97ed7c4fa407a27e34df105c2"
 dependencies = [
  "bones_utils_macros",
  "branches",
@@ -1409,7 +1421,7 @@ dependencies = [
 [[package]]
 name = "bones_utils_macros"
 version = "0.3.0"
-source = "git+https://github.com/fishfolk/bones#f495e07250004a13c7492d81881b53427086a8d7"
+source = "git+https://github.com/MaxCWhitehead/bones?branch=iroh-git#4218b116ba28add97ed7c4fa407a27e34df105c2"
 dependencies = [
  "quote",
  "venial",
@@ -2512,6 +2524,27 @@ checksum = "67b215c49b2b248c855fb73579eb1f4f26c38ffdc12973e20e07b91d78d5646e"
 dependencies = [
  "concurrent-queue",
  "parking",
+ "pin-project-lite",
+]
+
+[[package]]
+name = "event-listener"
+version = "5.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6032be9bd27023a771701cc49f9f053c751055f71efb2e0ae5c15809093675ba"
+dependencies = [
+ "concurrent-queue",
+ "parking",
+ "pin-project-lite",
+]
+
+[[package]]
+name = "event-listener-strategy"
+version = "0.5.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0f214dc438f977e6d4e3500aaa277f5ad94ca83fbbd9b1a15713ce2344ccc5a1"
+dependencies = [
+ "event-listener 5.3.1",
  "pin-project-lite",
 ]
 
@@ -3760,6 +3793,33 @@ dependencies = [
 ]
 
 [[package]]
+name = "iroh-base"
+version = "0.21.0"
+source = "git+https://github.com/n0-computer/iroh.git#d662bfc663ad956bbb38716bd5b8022a699bfce4"
+dependencies = [
+ "aead",
+ "anyhow",
+ "crypto_box",
+ "data-encoding",
+ "derive_more",
+ "ed25519-dalek",
+ "getrandom",
+ "hex",
+ "iroh-blake3",
+ "once_cell",
+ "postcard",
+ "rand",
+ "rand_core",
+ "serde",
+ "serde-error",
+ "ssh-key",
+ "thiserror",
+ "ttl_cache",
+ "url",
+ "zeroize",
+]
+
+[[package]]
 name = "iroh-blake3"
 version = "1.4.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3777,6 +3837,26 @@ name = "iroh-metrics"
 version = "0.21.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "472ec21d59b34c8fbebbd8fcecfdc0f4b00a7af2d6453b303a1e9c9499674f67"
+dependencies = [
+ "anyhow",
+ "erased_set",
+ "http-body-util",
+ "hyper 1.4.1",
+ "hyper-util",
+ "once_cell",
+ "prometheus-client",
+ "reqwest",
+ "serde",
+ "struct_iterable",
+ "time",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "iroh-metrics"
+version = "0.21.0"
+source = "git+https://github.com/n0-computer/iroh.git#d662bfc663ad956bbb38716bd5b8022a699bfce4"
 dependencies = [
  "anyhow",
  "erased_set",
@@ -3822,8 +3902,84 @@ dependencies = [
  "hyper 1.4.1",
  "hyper-util",
  "igd-next",
- "iroh-base",
- "iroh-metrics",
+ "iroh-base 0.21.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "iroh-metrics 0.21.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "iroh-quinn",
+ "iroh-quinn-proto",
+ "iroh-quinn-udp",
+ "libc",
+ "netdev",
+ "netlink-packet-core",
+ "netlink-packet-route",
+ "netlink-sys",
+ "num_enum 0.7.2",
+ "once_cell",
+ "parking_lot",
+ "pin-project",
+ "pkarr",
+ "postcard",
+ "rand",
+ "rand_core",
+ "rcgen",
+ "reqwest",
+ "ring",
+ "rtnetlink",
+ "rustls 0.21.12",
+ "rustls-webpki 0.101.7",
+ "serde",
+ "smallvec",
+ "socket2 0.5.7",
+ "strum 0.26.3",
+ "stun-rs",
+ "surge-ping",
+ "thiserror",
+ "time",
+ "tokio",
+ "tokio-rustls 0.24.1",
+ "tokio-tungstenite",
+ "tokio-tungstenite-wasm",
+ "tokio-util",
+ "tracing",
+ "tungstenite",
+ "url",
+ "watchable",
+ "webpki-roots 0.25.4",
+ "windows 0.51.1",
+ "wmi",
+ "x509-parser",
+ "z32",
+]
+
+[[package]]
+name = "iroh-net"
+version = "0.21.0"
+source = "git+https://github.com/n0-computer/iroh.git#d662bfc663ad956bbb38716bd5b8022a699bfce4"
+dependencies = [
+ "anyhow",
+ "async-channel 2.3.1",
+ "backoff",
+ "base64 0.22.1",
+ "bytes",
+ "der",
+ "derive_more",
+ "duct",
+ "futures-buffered",
+ "futures-concurrency",
+ "futures-lite 2.3.0",
+ "futures-sink",
+ "futures-util",
+ "governor",
+ "hex",
+ "hickory-proto",
+ "hickory-resolver",
+ "hostname",
+ "http 1.1.0",
+ "http-body-util",
+ "hyper 1.4.1",
+ "hyper-util",
+ "igd-next",
+ "iroh-base 0.21.0 (git+https://github.com/n0-computer/iroh.git)",
+ "iroh-metrics 0.21.0 (git+https://github.com/n0-computer/iroh.git)",
  "iroh-quinn",
  "iroh-quinn-proto",
  "iroh-quinn-udp",
@@ -3998,7 +4154,7 @@ dependencies = [
 name = "jumpy"
 version = "0.12.1"
 dependencies = [
- "async-channel",
+ "async-channel 1.9.0",
  "bevy_dylib",
  "bevy_tasks",
  "bitfield",
