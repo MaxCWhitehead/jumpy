@@ -606,6 +606,7 @@ fn hydrate_players(
     mut players_have_spawned: ResMutInit<PlayersHaveSpawned>,
     mut item_grabs: CompMut<ItemGrab>,
     mut item_throws: CompMut<ItemThrow>,
+    mut names: CompMut<Name>,
     mut items: CompMut<Item>,
     mut hats: CompMut<Hat>,
 ) {
@@ -636,6 +637,8 @@ fn hydrate_players(
             animations: meta.layers.body.animations.frames.clone(),
             last_animation: default(),
         };
+
+        names.insert(player_entity, Name(format!("Player_{}", player_idx.0)));
 
         player_states.insert(player_entity, default());
         emote_states.insert(player_entity, default());
