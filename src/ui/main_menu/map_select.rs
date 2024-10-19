@@ -114,6 +114,11 @@ pub fn widget(
                             Some(meta.network.max_prediction_window),
                             Some(meta.network.local_input_delay),
                             random_seed,
+                            Some(DetectDesyncs {
+                                detection_interval: 1,
+                                world_hash_func: None,
+                                include_unhashable_nodes: true,
+                            }),
                         ),
                     ))
                 }
