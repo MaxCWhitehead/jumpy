@@ -638,6 +638,7 @@ fn hydrate_players(
             last_animation: default(),
         };
 
+        info!("Name inserted");
         names.insert(player_entity, Name(format!("Player_{}", player_idx.0)));
 
         player_states.insert(player_entity, default());
