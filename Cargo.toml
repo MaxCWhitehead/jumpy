@@ -126,20 +126,20 @@ bytemuck   = "1.12"
 # quinn_runtime_bevy     = "0.2"
 
 # Optimize dependencies even in development
-[profile.dev.package."*"]
-codegen-units = 1
-debug         = 1 # Only keep line numbers
-opt-level     = 3
+# [profile.dev.package."*"]
+# codegen-units = 1
+# debug         = 1 # Only keep line numbers
+# opt-level     = 0
 
-# Optimize our code a little bit.
-[profile.dev]
-codegen-units = 256
-opt-level     = 1
+# # Optimize our code a little bit.
+# [profile.dev]
+# codegen-units = 256
+# opt-level     = 0
 
-[profile.dev-optimized]
-debug     = 1
-inherits  = "dev"
-opt-level = 3
+# [profile.dev-optimized]
+# debug     = 1
+# inherits  = "dev"
+# opt-level = 0
 
 [profile.release]
 codegen-units = 1    # Improved rapier physics perf, so it might help other stuff, too
